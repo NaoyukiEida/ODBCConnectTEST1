@@ -77,10 +77,7 @@ namespace ODBCConnectTEST
             OdbcConnectionStringBuilder builder = new OdbcConnectionStringBuilder();
 
 
-            //builder.Driver = "{SQL Server}";
-            //builder["Server"] = @"172.17.156.238\SQLEXPRESS;NewValue=SQLServer172.17.156.238";
-            //builder.Dsn = @"SQLServer172.17.156.238";
-            //builder.Add["UID"]="sa1";
+           
 
             builder.ConnectionString = @"Driver={SQL Server};Server=" + SERVER_IPADDRESS + @"\SQLEXPRESS;Database=TEST;Uid=sa1;Pwd=password01!!";
 
@@ -113,6 +110,41 @@ namespace ODBCConnectTEST
             }
 
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OdbcConnectionStringBuilder builder = new OdbcConnectionStringBuilder();
+
+            builder.ConnectionString = @"Provider=MSDASQL;DSN=SQLServer172.17.156.238;Uid=sa1;Pwd=password01!!";
+
+            //MessageBox.Show(builder.ConnectionString);
+            this.textBox3.Text = builder.ConnectionString;
+
+            using (OdbcConnection connection = new OdbcConnection(builder.ConnectionString))
+            {
+
+                OdbcCommand cmd = new OdbcCommand();
+                cmd.CommandText = "SELECT * FROM Tbl1";
+
+                connection.Open();
+
+                cmd.Connection = connection;
+
+                OdbcDataReader r;
+                r = cmd.ExecuteReader();
+
+                string str1 = string.Empty;
+
+                while (r.Read())
+                {
+                    str1 += r[1] + " " + r[2] + "\r\n";
+                }
+
+
+                MessageBox.Show(str1);
+
+            }
         }
     }
 }
